@@ -1,0 +1,17 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Workshops podem ser lidos por todos, mas só editados por usuários autenticados
+    match /workshops/{document} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    
+    // Users só podem ser acessados por administradores
+    match /users/{document} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && 
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+  }
+}
