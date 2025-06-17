@@ -24,15 +24,39 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser: FirebaseUser | null) => {
       if (firebaseUser) {
-        // Buscar dados do usuário no Firestore
-        const userDoc = await getDoc(doc(db, "users", firebaseUser.uid))
-        if (userDoc.exists()) {
-          const userData = userDoc.data()
-          setUser({
-            uid: firebaseUser.uid,
-            email: firebaseUser.email!,
-            role: userData.role,
-          })
+        try {
+          console.log("🔍 Buscando usuário com UID:", firebaseUser.uid)
+
+          // Tentar primeiro com "users" (minúsculo)
+          let userDoc = await getDoc(doc(db, "users", firebaseUser.uid))
+
+          // Se não encontrar, tentar com "Users" (maiúsculo)
+          if (!userDoc.exists()) {
+            console.log("⚠️ Não encontrado em 'users', tentando 'Users'...")
+            userDoc = await getDoc(doc(db, "Users", firebaseUser.uid))
+          }
+
+          console.log("📄 Documento existe?", userDoc.exists())
+          console.log("📍 Collection testada:", userDoc.exists() ? "encontrado" : "não encontrado")
+
+          if (userDoc.exists()) {
+            const userData = userDoc.data()
+            console.log("✅ Dados do usuário:", userData)
+
+            setUser({
+              uid: firebaseUser.uid,
+              email: firebaseUser.email!,
+              role: userData.role,
+            })
+          } else {
+            console.error("❌ Documento não encontrado em nenhuma collection")
+            console.log("🔍 UID procurado:", firebaseUser.uid)
+            console.log("📋 Verifique se existe um documento com este UID exato no Firestore")
+            setUser(null)
+          }
+        } catch (error) {
+          console.error("💥 Erro ao buscar dados do usuário:", error)
+          setUser(null)
         }
       } else {
         setUser(null)
@@ -44,11 +68,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   const login = async (email: string, password: string) => {
-    await signInWithEmailAndPassword(auth, email, password)
+    try {
+      const result = await signInWithEmailAndPassword(auth, email, password)
+      console.log("🔐 Login realizado com UID:", result.user.uid)
+    } catch (error) {
+      console.error("❌ Erro no login:", error)
+      throw error
+    }
   }
 
   const logout = async () => {
-    await signOut(auth)
+    try {
+      await signOut(auth)
+      setUser(null)
+    } catch (error) {
+      console.error("❌ Erro no logout:", error)
+      throw error
+    }
   }
 
   return <AuthContext.Provider value={{ user, loading, login, logout }}>{children}</AuthContext.Provider>

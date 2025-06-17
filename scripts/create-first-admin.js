@@ -1,5 +1,4 @@
 const createFirstAdmin = async () => {
-
   const userUID = "WJGaXm16ZbR9xDoSlSmOoW3Qw983"
 
   const adminData = {

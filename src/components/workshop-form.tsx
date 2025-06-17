@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import ImageUpload from "./image-upload"
+import ImageUploadCloudinary from "./image-upload-cloudinary"
 import type { Workshop } from "@/lib/types"
 
 interface WorkshopFormProps {
@@ -74,7 +74,8 @@ export default function WorkshopForm({ workshop, onSubmit, onCancel }: WorkshopF
             />
           </div>
 
-          <ImageUpload
+          {/* Upload de imagem com Cloudinary */}
+          <ImageUploadCloudinary
             onImageUploaded={handleImageUploaded}
             currentImage={formData.image}
             label="Imagem da Oficina *"
