@@ -73,8 +73,6 @@ export default function WorkshopForm({ workshop, onSubmit, onCancel }: WorkshopF
               rows={3}
             />
           </div>
-
-          {/* Upload de imagem com Cloudinary */}
           <ImageUploadCloudinary
             onImageUploaded={handleImageUploaded}
             currentImage={formData.image}

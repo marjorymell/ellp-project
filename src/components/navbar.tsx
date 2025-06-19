@@ -55,7 +55,6 @@ export default function Navbar() {
 
             {user ? (
               <div className="flex items-center space-x-2">
-                {/* Botão para criar oficina (admin e voluntário) */}
                 <Link href="/workshops/new">
                   <Button variant="outline" size="sm">
                     <Plus className="w-4 h-4 mr-2" />
@@ -63,7 +62,6 @@ export default function Navbar() {
                   </Button>
                 </Link>
 
-                {/* Área administrativa (apenas admin) */}
                 {user.role === "admin" && (
                   <Link href="/admin">
                     <Button variant="outline" size="sm">
@@ -73,7 +71,6 @@ export default function Navbar() {
                   </Link>
                 )}
 
-                {/* Área do voluntário */}
                 {user.role === "volunteer" && (
                   <Link href="/volunteer">
                     <Button variant="outline" size="sm">
