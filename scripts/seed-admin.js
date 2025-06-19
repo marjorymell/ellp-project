@@ -6,10 +6,8 @@ const createFirstAdmin = async () => {
   const db = getFirestore()
 
   try {
-    // Criar usuário no Authentication
     const userCredential = await createUserWithEmailAndPassword(auth, "admin@ellp.com", "senha123")
 
-    // Criar documento do usuário no Firestore
     await setDoc(doc(db, "users", userCredential.user.uid), {
       name: "Administrador ELLP",
       email: "admin@ellp.com",
