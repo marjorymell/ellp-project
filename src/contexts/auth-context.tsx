@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { createContext, useContext, useEffect, useState } from "react"
 import { type User as FirebaseUser, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth"
 import { doc, getDoc } from "firebase/firestore"
@@ -23,45 +22,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser: FirebaseUser | null) => {
-      if (firebaseUser) {
-        try {
-          console.log("🔍 Buscando usuário com UID:", firebaseUser.uid)
-
-          // Tentar primeiro com "users" (minúsculo)
-          let userDoc = await getDoc(doc(db, "users", firebaseUser.uid))
-
-          // Se não encontrar, tentar com "Users" (maiúsculo)
-          if (!userDoc.exists()) {
-            console.log("⚠️ Não encontrado em 'users', tentando 'Users'...")
-            userDoc = await getDoc(doc(db, "Users", firebaseUser.uid))
-          }
-
-          console.log("📄 Documento existe?", userDoc.exists())
-          console.log("📍 Collection testada:", userDoc.exists() ? "encontrado" : "não encontrado")
+      try {
+        if (firebaseUser) {
+          const userDoc = await getDoc(doc(db, "users", firebaseUser.uid))
 
           if (userDoc.exists()) {
             const userData = userDoc.data()
-            console.log("✅ Dados do usuário:", userData)
-
             setUser({
               uid: firebaseUser.uid,
               email: firebaseUser.email!,
               role: userData.role,
             })
           } else {
-            console.error("❌ Documento não encontrado em nenhuma collection")
-            console.log("🔍 UID procurado:", firebaseUser.uid)
-            console.log("📋 Verifique se existe um documento com este UID exato no Firestore")
+            console.error("Usuário não encontrado no Firestore")
+            await signOut(auth)
             setUser(null)
           }
-        } catch (error) {
-          console.error("💥 Erro ao buscar dados do usuário:", error)
+        } else {
           setUser(null)
         }
-      } else {
+      } catch (error) {
+        console.error("Erro ao verificar usuário:", error)
         setUser(null)
+      } finally {
+        setLoading(false)
       }
-      setLoading(false)
     })
 
     return () => unsubscribe()
@@ -69,10 +54,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = async (email: string, password: string) => {
     try {
-      const result = await signInWithEmailAndPassword(auth, email, password)
-      console.log("🔐 Login realizado com UID:", result.user.uid)
+      await signInWithEmailAndPassword(auth, email, password)
     } catch (error) {
-      console.error("❌ Erro no login:", error)
+      console.error("Erro no login:", error)
       throw error
     }
   }
@@ -82,7 +66,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       await signOut(auth)
       setUser(null)
     } catch (error) {
-      console.error("❌ Erro no logout:", error)
+      console.error("Erro no logout:", error)
       throw error
     }
   }

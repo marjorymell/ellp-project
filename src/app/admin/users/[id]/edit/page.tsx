@@ -1,12 +1,11 @@
 "use client"
 
 import type React from "react"
-import { useState, useEffect } from "react"
+import { useState, useEffect, use } from "react"
 import { useAuth } from "@/contexts/auth-context"
 import { useRouter } from "next/navigation"
-import { createUserWithEmailAndPassword } from "firebase/auth"
-import { doc, setDoc } from "firebase/firestore"
-import { auth, db } from "@/lib/firebase"
+import { doc, getDoc, updateDoc } from "firebase/firestore"
+import { db } from "@/lib/firebase"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -14,16 +13,24 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import type { User } from "@/lib/types"
 
-export default function NewUserPage() {
+interface EditUserPageProps {
+  params: Promise<{
+    id: string
+  }>
+}
+
+export default function EditUserPage(props: EditUserPageProps) {
+  const params = use(props.params)
   const { user, loading: authLoading } = useAuth()
   const router = useRouter()
   const [submitting, setSubmitting] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    password: "",
     course: "",
     photo: "",
     role: "volunteer" as "admin" | "volunteer",
@@ -35,7 +42,36 @@ export default function NewUserPage() {
       router.push("/")
       return
     }
+
+    if (user && user.role === "admin") {
+      fetchUserData()
+    }
   }, [user, authLoading, router])
+
+  const fetchUserData = async () => {
+    try {
+      const userDoc = await getDoc(doc(db, "users", params.id))
+
+      if (userDoc.exists()) {
+        const userData = userDoc.data() as User
+        setFormData({
+          name: userData.name,
+          email: userData.email,
+          course: userData.course,
+          photo: userData.photo || "",
+          role: userData.role,
+          isVisibleOnContact: userData.isVisibleOnContact,
+        })
+      } else {
+        setError("Usuário não encontrado")
+      }
+    } catch (error) {
+      console.error("Erro ao buscar usuário:", error)
+      setError("Erro ao carregar dados do usuário")
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -45,31 +81,25 @@ export default function NewUserPage() {
     setError("")
 
     try {
-      // Criar usuário no Firebase Auth
-      const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password)
-
-      // Criar documento no Firestore
-      await setDoc(doc(db, "users", userCredential.user.uid), {
+      await updateDoc(doc(db, "users", params.id), {
         name: formData.name,
-        email: formData.email,
         course: formData.course,
         photo: formData.photo,
         role: formData.role,
         isVisibleOnContact: formData.isVisibleOnContact,
-        createdAt: new Date().toISOString(),
       })
 
-      alert("Usuário criado com sucesso!")
+      alert("Usuário atualizado com sucesso!")
       router.push("/admin")
     } catch (error: any) {
-      console.error("Erro ao criar usuário:", error)
-      setError(error.message || "Erro ao criar usuário")
+      console.error("Erro ao atualizar usuário:", error)
+      setError(error.message || "Erro ao atualizar usuário")
     } finally {
       setSubmitting(false)
     }
   }
 
-  if (authLoading) {
+  if (authLoading || loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
         <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-600"></div>
@@ -85,7 +115,7 @@ export default function NewUserPage() {
     <div className="max-w-2xl mx-auto px-4 py-8">
       <Card>
         <CardHeader>
-          <CardTitle>Novo Usuário</CardTitle>
+          <CardTitle>Editar Usuário</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -106,27 +136,9 @@ export default function NewUserPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="email">Email *</Label>
-              <Input
-                id="email"
-                type="email"
-                value={formData.email}
-                onChange={(e) => setFormData((prev) => ({ ...prev, email: e.target.value }))}
-                required
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="password">Senha *</Label>
-              <Input
-                id="password"
-                type="password"
-                value={formData.password}
-                onChange={(e) => setFormData((prev) => ({ ...prev, password: e.target.value }))}
-                required
-                minLength={6}
-              />
-              <p className="text-xs text-gray-500">Mínimo 6 caracteres</p>
+              <Label htmlFor="email">Email</Label>
+              <Input id="email" type="email" value={formData.email} disabled className="bg-gray-100" />
+              <p className="text-xs text-gray-500">O email não pode ser alterado</p>
             </div>
 
             <div className="space-y-2">
@@ -177,7 +189,7 @@ export default function NewUserPage() {
 
             <div className="flex gap-4">
               <Button type="submit" disabled={submitting}>
-                {submitting ? "Criando..." : "Criar Usuário"}
+                {submitting ? "Salvando..." : "Salvar Alterações"}
               </Button>
               <Button type="button" variant="outline" onClick={() => router.push("/admin")}>
                 Cancelar
