@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { useAuth } from "@/contexts/auth-context"
 import { Button } from "@/components/ui/button"
-import { LogOut, User, Settings, Plus } from "lucide-react"
+import { LogOut, User, Settings, Plus, UserPlus } from "lucide-react"
 
 export default function Navbar() {
   const { user, logout, loading } = useAuth()
@@ -86,9 +86,17 @@ export default function Navbar() {
                 </Button>
               </div>
             ) : (
-              <Link href="/login">
-                <Button>Login</Button>
-              </Link>
+              <div className="flex items-center space-x-2">
+                <Link href="/register">
+                  <Button variant="outline" size="sm">
+                    <UserPlus className="w-4 h-4 mr-2" />
+                    Registrar
+                  </Button>
+                </Link>
+                <Link href="/login">
+                  <Button size="sm">Login</Button>
+                </Link>
+              </div>
             )}
           </div>
         </div>
