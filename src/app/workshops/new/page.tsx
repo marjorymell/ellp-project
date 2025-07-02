@@ -31,7 +31,7 @@ export default function NewWorkshopPage() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
+      <div className="flex justify-center items-center min-h-screen" style={{ backgroundColor: "#E3F2FF" }}>
         <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-600"></div>
       </div>
     )
@@ -43,10 +43,10 @@ export default function NewWorkshopPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8" style={{ backgroundColor: "#E3F2FF" }}>
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Nova Oficina</h1>
-        <p className="text-gray-600">Crie um novo poster para divulgar uma oficina</p>
+        <h1 className="text-2xl font-bold text-gray-900 ml-8">Nova Oficina</h1>
+        <p className="text-gray-600 ml-8">Crie um novo poster para divulgar uma oficina</p>
       </div>
       <WorkshopForm onSubmit={handleSubmit} onCancel={() => router.push("/")} />
     </div>

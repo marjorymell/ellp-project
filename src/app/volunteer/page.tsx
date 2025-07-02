@@ -62,7 +62,7 @@ export default function VolunteerPage() {
 
   if (loading || loadingData) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
+      <div className="flex justify-center items-center min-h-screen" style={{ backgroundColor: "#E3F2FF" }}>
         <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-600"></div>
       </div>
     )
@@ -73,6 +73,7 @@ export default function VolunteerPage() {
   }
 
   return (
+    <div className="min-h-screen w-full" style={{ backgroundColor: "#E3F2FF" }}>
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900">Área do Voluntário</h1>
@@ -83,7 +84,25 @@ export default function VolunteerPage() {
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>Minhas Oficinas ({workshops.length})</CardTitle>
           <Link href="/workshops/new">
-            <Button>
+            <Button
+            variant="outline"
+                    size="sm"
+                    className="text-white transition-colors duration-200"
+                    style={{
+                        backgroundColor: "#F58E2F",
+                        borderColor: "#F58E2F"}}
+
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = "#ffa34f"
+                      e.currentTarget.style.borderColor = "#ffa34f"
+                      e.currentTarget.style.color = "white"
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = "#F58E2F"
+                      e.currentTarget.style.borderColor = "#F58E2F"
+                      e.currentTarget.style.color = "white"
+                    }}
+              >
               <Plus className="w-4 h-4 mr-2" />
               Nova Oficina
             </Button>
@@ -95,7 +114,25 @@ export default function VolunteerPage() {
               <h3 className="text-lg font-medium text-gray-900 mb-2">Nenhuma oficina cadastrada</h3>
               <p className="text-gray-600 mb-4">Comece criando sua primeira oficina</p>
               <Link href="/workshops/new">
-                <Button>
+                <Button
+                variant="outline"
+                    size="sm"
+                    className="text-white transition-colors duration-200"
+                    style={{
+                        backgroundColor: "#F58E2F",
+                        borderColor: "#F58E2F"}}
+
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = "#ffa34f"
+                      e.currentTarget.style.borderColor = "#ffa34f"
+                      e.currentTarget.style.color = "white"
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = "#F58E2F"
+                      e.currentTarget.style.borderColor = "#F58E2F"
+                      e.currentTarget.style.color = "white"
+                    }}
+                >
                   <Plus className="w-4 h-4 mr-2" />
                   Criar Primeira Oficina
                 </Button>
@@ -104,7 +141,7 @@ export default function VolunteerPage() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {workshops.map((workshop) => (
-                <div key={workshop.id} className="border rounded-lg overflow-hidden">
+                <Card key={workshop.id} className="border rounded-lg overflow-hidden">
                   <div className="relative h-32">
                     <Image
                       src={workshop.image || "/placeholder.svg?height=128&width=256"}
@@ -124,17 +161,18 @@ export default function VolunteerPage() {
                           <Edit className="w-4 h-4" />
                         </Button>
                       </Link>
-                      <Button variant="destructive" size="sm" onClick={() => deleteWorkshop(workshop.id)}>
+                      <Button className="hover:bg-[#ff5145]" variant="destructive" size="sm" onClick={() => deleteWorkshop(workshop.id)}>
                         <Trash2 className="w-4 h-4" />
                       </Button>
                     </div>
                   </div>
-                </div>
+                </Card>
               ))}
             </div>
           )}
         </CardContent>
       </Card>
+    </div>
     </div>
   )
 }

@@ -11,18 +11,15 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Checkbox } from "@/components/ui/checkbox"
-import Link from "next/link"
+import { Shield } from "lucide-react"
 
-export default function RegisterPage() {
+export default function SetupAdminPage() {
   const [formData, setFormData] = useState({
-    name: "",
+    name: "Administrador ELLP",
     email: "",
     password: "",
     confirmPassword: "",
-    course: "",
-    photo: "",
-    isVisibleOnContact: false,
+    course: "Administração do Sistema",
   })
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
@@ -46,14 +43,14 @@ export default function RegisterPage() {
       return
     }
 
-    if (!formData.name.trim() || !formData.email.trim() || !formData.course.trim()) {
+    if (!formData.name.trim() || !formData.email.trim()) {
       setError("Por favor, preencha todos os campos obrigatórios")
       setLoading(false)
       return
     }
 
     try {
-      console.log("🔄 Iniciando registro de voluntário...")
+      console.log("🔄 Criando administrador...")
       console.log("📧 Email:", formData.email)
 
       // Criar usuário no Authentication
@@ -65,19 +62,19 @@ export default function RegisterPage() {
         name: formData.name.trim(),
         email: formData.email.trim(),
         course: formData.course.trim(),
-        photo: formData.photo.trim() || "",
-        role: "volunteer",
-        isVisibleOnContact: formData.isVisibleOnContact,
+        photo: "",
+        role: "admin",
+        isVisibleOnContact: true,
         createdAt: new Date().toISOString(),
       }
 
       await setDoc(doc(db, "users", userCredential.user.uid), userData)
-      console.log("✅ Documento criado no Firestore:", userData)
+      console.log("✅ Administrador criado no Firestore:", userData)
 
-      alert("✅ Conta criada com sucesso! Você será redirecionado para fazer login.")
+      alert("✅ Administrador criado com sucesso! Você será redirecionado para fazer login.")
       router.push("/login")
     } catch (error: any) {
-      console.error("❌ Erro ao criar conta:", error)
+      console.error("❌ Erro ao criar administrador:", error)
 
       // Mensagens de erro específicas
       let errorMessage = error.message
@@ -87,8 +84,6 @@ export default function RegisterPage() {
         errorMessage = "A senha deve ter pelo menos 6 caracteres."
       } else if (error.code === "auth/invalid-email") {
         errorMessage = "Email inválido."
-      } else if (error.code === "auth/invalid-api-key") {
-        errorMessage = "Erro de configuração do Firebase. Tente novamente mais tarde."
       }
 
       setError(errorMessage)
@@ -98,11 +93,14 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen gradient-bg flex items-center justify-center px-4 py-8">
-      <Card className="w-full max-w-md bg-white/90 backdrop-blur-sm shadow-2xl">
+    <div className="min-h-screen flex items-center justify-center px-4 py-8">
+      <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold" style={{ color: "#062B5B" }}>Registro de Voluntário</CardTitle>
-          <CardDescription>Crie sua conta para participar como voluntário do projeto ELLP</CardDescription>
+          <div className="mx-auto w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+            <Shield className="w-6 h-6 text-blue-600" />
+          </div>
+          <CardTitle>Configurar Administrador</CardTitle>
+          <CardDescription>Crie a primeira conta de administrador para gerenciar o sistema ELLP</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -119,7 +117,7 @@ export default function RegisterPage() {
                 value={formData.name}
                 onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
                 required
-                placeholder="Seu nome completo"
+                placeholder="Nome do administrador"
               />
             </div>
 
@@ -131,31 +129,18 @@ export default function RegisterPage() {
                 value={formData.email}
                 onChange={(e) => setFormData((prev) => ({ ...prev, email: e.target.value }))}
                 required
-                placeholder="seu@email.com"
+                placeholder="admin@ellp.com"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="course">Curso *</Label>
+              <Label htmlFor="course">Área/Curso</Label>
               <Input
                 id="course"
                 value={formData.course}
                 onChange={(e) => setFormData((prev) => ({ ...prev, course: e.target.value }))}
-                required
                 placeholder="Ex: Ciência da Computação"
               />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="photo">URL da Foto (opcional)</Label>
-              <Input
-                id="photo"
-                type="url"
-                value={formData.photo}
-                onChange={(e) => setFormData((prev) => ({ ...prev, photo: e.target.value }))}
-                placeholder="https://exemplo.com/sua-foto.jpg"
-              />
-              <p className="text-xs text-gray-500">Cole o link de uma foto sua (ex: do LinkedIn, GitHub, etc.)</p>
             </div>
 
             <div className="space-y-2">
@@ -182,41 +167,15 @@ export default function RegisterPage() {
               />
             </div>
 
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="isVisibleOnContact"
-                checked={formData.isVisibleOnContact}
-                onCheckedChange={(checked) => setFormData((prev) => ({ ...prev, isVisibleOnContact: !!checked }))}
-              />
-              <Label htmlFor="isVisibleOnContact" className="text-sm">
-                Quero aparecer na página de contato do site
-              </Label>
-            </div>
-
-            <Button type="submit" className="w-full text-white transition-colors duration-200"
-              style={{
-                backgroundColor: "#F58E2F",
-                borderColor: "#F58E2F",
-                color: "white",
-              }} 
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = "#ffa34f"
-                e.currentTarget.style.borderColor = "#ffa34f"
-                e.currentTarget.style.color = "white"
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = "#F58E2F"
-                e.currentTarget.style.borderColor = "#F58E2F"
-                e.currentTarget.style.color = "white"
-              }} disabled={loading}>
-              {loading ? "Criando conta..." : "Criar Conta"}
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? "Criando administrador..." : "Criar Administrador"}
             </Button>
 
             <div className="text-center text-sm text-gray-600">
               Já tem uma conta?{" "}
-              <Link href="/login" className="text-blue-600 hover:underline">
+              <a href="/login" className="text-blue-600 hover:underline">
                 Fazer login
-              </Link>
+              </a>
             </div>
           </form>
         </CardContent>

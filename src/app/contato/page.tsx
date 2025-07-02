@@ -34,19 +34,21 @@ export default function ContactPage() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
+      <div className="flex justify-center items-center min-h-screen" style={{ backgroundColor: "#E3F2FF" }}>
         <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-600"></div>
       </div>
     )
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">Nossa Equipe</h1>
-        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+      <div className="min-h-screen w-full" style={{ backgroundColor: "#E3F2FF" }}>
+       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">Nossa Equipe</h1>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
           Conheça os voluntários e administradores que tornam o projeto ELLP possível
-        </p>
+          </p>
+        </div>
       </div>
 
       {users.length === 0 ? (
@@ -54,9 +56,9 @@ export default function ContactPage() {
           <h2 className="text-2xl font-semibold text-gray-900 mb-4">Nenhum membro da equipe disponível</h2>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-30">
           {users.map((user) => (
-            <Card key={user.id} className="text-center">
+            <Card key={user.id} className="text-center p-6 bg-white hover:shadow-[0_4px_20px_-2px_rgba(245,142,47,0.6)] transition-shadow">
               <CardHeader>
                 <div className="relative w-24 h-24 mx-auto mb-4">
                   <Image
