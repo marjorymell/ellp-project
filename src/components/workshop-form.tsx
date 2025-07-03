@@ -127,7 +127,22 @@ export default function WorkshopForm({ workshop, onSubmit, onCancel }: WorkshopF
           </div>
 
           <div className="flex gap-4">
-            <Button type="submit" disabled={loading || !formData.image}>
+            <Button type="submit" 
+            className="text-white" 
+            style={{
+              backgroundColor: "#F58E2F",
+              borderColor: "#F58E2F"
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = "#ffa34f";
+              e.currentTarget.style.borderColor = "#ffa34f";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = "#F58E2F";
+              e.currentTarget.style.borderColor = "#F58E2F";
+            }}
+            
+            disabled={loading || !formData.image}>
               {loading ? "Salvando..." : "Salvar Oficina"}
             </Button>
             <Button type="button" variant="outline" onClick={onCancel}>

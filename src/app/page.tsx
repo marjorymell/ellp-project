@@ -43,63 +43,97 @@ export default function HomePage() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
+      <div className="flex justify-center items-center min-h-screen" style={{ backgroundColor: "#E3F2FF" }}>
         <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-600"></div>
       </div>
     )
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Hero Section */}
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">ELLP - Ensino Lúdico de Lógica de Programação</h1>
-        <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-          Descubra nossas oficinas de programação e participe de uma experiência de aprendizado única e divertida!
-        </p>
+    <div className="min-h-screen" style={{ backgroundColor: "#E3F2FF" }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Hero Section */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4 ${poppins.className}">ELLP - Ensino Lúdico de Lógica de Programação</h1>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+            Descubra nossas oficinas de programação e participe de uma experiência de aprendizado única e divertida!
+          </p>
 
         {/* Call to Action Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          <Card>
+          <Card className="bg-white hover:shadow-[0_4px_20px_-2px_rgba(245,142,47,0.6)] transition-shadow">
             <CardHeader className="text-center">
-              <BookOpen className="w-8 h-8 mx-auto text-blue-600 mb-2" />
-              <CardTitle className="text-lg">Participe das Oficinas</CardTitle>
+              <BookOpen className="w-8 h-8 mx-auto mb-2" style={{color: "#F58E2F"}} />
+              <CardTitle className="text-lg" style={{ color: "#062B5B"}}>Participe das Oficinas</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-gray-600 mb-4">
                 Explore nossas oficinas de programação e aprenda de forma divertida e interativa.
               </p>
+              <Button
+              size="sm"
+              className="w-full text-white transition-colors duration-200"
+              style={{ backgroundColor: "#0075CA"}}
+              onClick={() => {
+                document.getElementById("workshops")?.scrollIntoView({
+                  behavior: "smooth",
+                });
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = "#005A9E";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = "#0075CA";
+              }}
+              >Ver Oficinas!
+              </Button>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-white hover:shadow-[0_4px_20px_-2px_rgba(245,142,47,0.6)] transition-shadow">
             <CardHeader className="text-center">
-              <Users className="w-8 h-8 mx-auto text-green-600 mb-2" />
-              <CardTitle className="text-lg">Seja um Voluntário</CardTitle>
+              <Users className="w-8 h-8 mx-auto mb-2" style={{color: "#F58E2F"}} />
+              <CardTitle className="text-lg" style={{ color: "#062B5B"}}>Seja um Voluntário</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-gray-600 mb-4">
                 Junte-se à nossa equipe e ajude a ensinar programação para outros estudantes.
               </p>
               <Link href="/register">
-                <Button size="sm" className="w-full">
+                <Button size="sm"
+                    className="w-full text-white transition-colors duration-200"
+                    style={{ backgroundColor: "#0075CA" }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = "#005a9e"
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = "#0075CA"
+                    }}>
                   Registrar-se
                 </Button>
               </Link>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-white hover:shadow-[0_4px_20px_-2px_rgba(245,142,47,0.6)] transition-shadow">
             <CardHeader className="text-center">
-              <Calendar className="w-8 h-8 mx-auto text-purple-600 mb-2" />
-              <CardTitle className="text-lg">Crie Oficinas</CardTitle>
+               <Calendar className="w-8 h-8 mx-auto mb-2" style={{color: "#F58E2F"}} />
+              <CardTitle className="text-lg" style={{ color: "#062B5B" }}>Crie Oficinas</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-gray-600 mb-4">
                 Voluntários podem criar e divulgar suas próprias oficinas na plataforma.
               </p>
               <Link href="/login">
-                <Button size="sm" variant="outline" className="w-full">
+                <Button size="sm"
+                    className="w-full text-white transition-colors duration-200"
+                    style={{ backgroundColor: "#0075CA" }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = "#005a9e"
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = "#0075CA"
+                    }}>
                   Fazer Login
                 </Button>
               </Link>
@@ -122,8 +156,8 @@ export default function HomePage() {
       )}
 
       {/* Workshops Section */}
-      <div className="mb-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Oficinas Disponíveis</h2>
+      <div id="workshops" className="mb-8">
+        <h2 className="text-2xl font-bold text-gray-900 mb-6" style={{ color: "#062B5B" }}>Oficinas Disponíveis</h2>
 
         {workshops.length === 0 && !error ? (
           <div className="text-center py-12">
@@ -147,8 +181,9 @@ export default function HomePage() {
             {workshops.map((workshop) => (
               <WorkshopCard key={workshop.id} workshop={workshop} />
             ))}
-          </div>
-        )}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )

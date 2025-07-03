@@ -4,7 +4,7 @@ import type React from "react"
 import { createContext, useContext, useEffect, useState } from "react"
 import { type User as FirebaseUser, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth"
 import { doc, getDoc } from "firebase/firestore"
-import { auth, db } from "@/lib/firebase"
+import { auth, db, isUsingRealFirebase } from "@/lib/firebase"
 import type { AuthUser } from "@/lib/types"
 
 interface AuthContextType {
@@ -21,9 +21,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    if (!isUsingRealFirebase || !auth) {
+      setLoading(false)
+      return
+    }
+
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser: FirebaseUser | null) => {
       try {
-        if (firebaseUser) {
+        if (firebaseUser && db) {
           const userDoc = await getDoc(doc(db, "users", firebaseUser.uid))
 
           if (userDoc.exists()) {
@@ -53,6 +58,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   const login = async (email: string, password: string) => {
+    if (!isUsingRealFirebase || !auth) {
+      throw new Error("Firebase não configurado. Configure as variáveis de ambiente.")
+    }
+
     try {
       await signInWithEmailAndPassword(auth, email, password)
     } catch (error) {
@@ -62,6 +71,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   const logout = async () => {
+    if (!isUsingRealFirebase || !auth) {
+      setUser(null)
+      return
+    }
+
     try {
       await signOut(auth)
       setUser(null)
