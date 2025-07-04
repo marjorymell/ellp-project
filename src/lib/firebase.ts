@@ -2,7 +2,6 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
-// Firebase configuration using environment variables
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -12,7 +11,6 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-// Check if all required environment variables are present
 const isUsingRealFirebase = !!(
   process.env.NEXT_PUBLIC_FIREBASE_API_KEY &&
   process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID &&
@@ -28,20 +26,20 @@ let db: any;
 
 try {
   if (isUsingRealFirebase) {
-    console.log("🔥 Inicializando Firebase...");
+    console.log("Inicializando Firebase...");
     app = initializeApp(firebaseConfig);
     auth = getAuth(app);
     db = getFirestore(app);
-    console.log("✅ Firebase configurado com credenciais reais");
-    console.log("📊 Project ID:", process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID);
+    console.log("Firebase configurado com credenciais reais");
+    console.log("Project ID:", process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID);
   } else {
-    console.log("⚠️ Firebase não configurado - variáveis de ambiente faltando");
-    console.log("🔧 Executando em modo demonstração");
+    console.log("Firebase não configurado - variáveis de ambiente faltando");
+    console.log("Executando em modo demonstração");
     auth = null;
     db = null;
   }
 } catch (error) {
-  console.error("❌ Erro ao inicializar Firebase:", error);
+  console.error("Erro ao inicializar Firebase:", error);
   auth = null;
   db = null;
 }
