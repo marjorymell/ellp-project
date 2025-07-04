@@ -105,15 +105,42 @@ export default function VolunteerRequestsPage() {
     setProcessingId(userToApprove.id);
 
     try {
+      // Perguntar ao admin se o usuário deve aparecer na página de contato
+      const shouldBeVisible = confirm(
+        `Aprovar ${userToApprove.name} como voluntário?\n\n` +
+          `Clique "OK" para aprovar E incluir na página de contato\n` +
+          `Clique "Cancelar" para aprovar MAS NÃO incluir na página de contato`
+      );
+
+      // Se o usuário cancelar, perguntar se ainda quer aprovar
+      let finalApproval = shouldBeVisible;
+      if (!shouldBeVisible) {
+        finalApproval = confirm(
+          `Aprovar ${userToApprove.name} como voluntário?\n\n` +
+            `(Não aparecerá na página de contato)`
+        );
+      }
+
+      if (!finalApproval) {
+        setProcessingId(null);
+        return;
+      }
+
       // Atualizar status do usuário para "active"
       await updateDoc(doc(db, "users", userToApprove.id), {
         status: "active",
+        isVisibleOnContact: shouldBeVisible, // Definir baseado na escolha do admin
         approvedAt: new Date().toISOString(),
         approvedBy: user?.uid,
       });
 
+      const visibilityMessage = shouldBeVisible
+        ? "e aparecerá na página de contato"
+        : "mas NÃO aparecerá na página de contato";
+
       alert(
-        `✅ Voluntário ${userToApprove.name} aprovado com sucesso!\n\nEle já pode fazer login no sistema.`
+        `✅ Voluntário ${userToApprove.name} aprovado com sucesso!\n\n` +
+          `Ele já pode fazer login no sistema ${visibilityMessage}.`
       );
 
       fetchUsers();
@@ -280,12 +307,11 @@ export default function VolunteerRequestsPage() {
                             "pt-BR"
                           )}
                         </p>
-                        {pendingUser.isVisibleOnContact && (
-                          <p className="text-sm text-blue-600 flex items-center mt-1">
-                            <Eye className="w-4 h-4 mr-1" />
-                            Quer aparecer na página de contato
-                          </p>
-                        )}
+                        <p className="text-sm text-gray-500 flex items-center mt-1">
+                          <Eye className="w-4 h-4 mr-1" />
+                          Visibilidade na página de contato será definida na
+                          aprovação
+                        </p>
                       </div>
                     </div>
                     <Badge

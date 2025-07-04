@@ -17,7 +17,6 @@ import {
   CardTitle,
 } from "../../components/ui/card";
 import { Alert, AlertDescription } from "../../components/ui/alert";
-import { Checkbox } from "../../components/ui/checkbox";
 import { CheckCircle } from "lucide-react";
 import Link from "next/link";
 
@@ -29,7 +28,6 @@ export default function RegisterPage() {
     confirmPassword: "",
     course: "",
     photo: "",
-    isVisibleOnContact: false,
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -41,6 +39,7 @@ export default function RegisterPage() {
     setLoading(true);
     setError("");
 
+    // Validações
     if (formData.password !== formData.confirmPassword) {
       setError("As senhas não coincidem");
       setLoading(false);
@@ -63,6 +62,7 @@ export default function RegisterPage() {
       return;
     }
 
+    // Validar formato do email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
       setError("Por favor, insira um email válido");
@@ -71,37 +71,40 @@ export default function RegisterPage() {
     }
 
     try {
-      console.log("Criando conta de voluntário...");
-      console.log("Email:", formData.email);
+      console.log("🔄 Criando conta de voluntário...");
+      console.log("📧 Email:", formData.email);
 
+      // Criar usuário no Firebase Auth
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         formData.email,
         formData.password
       );
       console.log(
-        "Usuário criado no Authentication:",
+        "✅ Usuário criado no Authentication:",
         userCredential.user.uid
       );
 
+      // Criar documento do usuário com status "pending"
       const userData = {
         name: formData.name.trim(),
         email: formData.email.trim().toLowerCase(),
         course: formData.course.trim(),
         photo: formData.photo.trim() || "",
         role: "volunteer",
-        isVisibleOnContact: formData.isVisibleOnContact,
-        status: "pending", 
+        isVisibleOnContact: false, // Sempre false inicialmente, só true após aprovação
+        status: "pending", // Conta criada mas pendente de aprovação
         createdAt: new Date().toISOString(),
       };
 
       await setDoc(doc(db, "users", userCredential.user.uid), userData);
-      console.log("Documento criado no Firestore:", userData);
+      console.log("✅ Documento criado no Firestore:", userData);
 
       setSuccess(true);
     } catch (error: any) {
-      console.error("Erro ao criar conta:", error);
+      console.error("❌ Erro ao criar conta:", error);
 
+      // Mensagens de erro específicas
       let errorMessage = error.message;
       if (error.code === "auth/email-already-in-use") {
         errorMessage =
@@ -161,7 +164,7 @@ export default function RegisterPage() {
             <div className="bg-yellow-50 p-3 rounded-lg">
               <p className="text-sm text-yellow-700">
                 <strong>Importante:</strong> Sua conta está com status
-                &quot;pendente&ldquo;. Você só conseguirá fazer login após um
+                &quot;pendente&quot;. Você só conseguirá fazer login após um
                 administrador aprovar sua conta.
               </p>
             </div>
@@ -298,22 +301,6 @@ export default function RegisterPage() {
                 required
                 placeholder="Digite a senha novamente"
               />
-            </div>
-
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="isVisibleOnContact"
-                checked={formData.isVisibleOnContact}
-                onCheckedChange={(checked) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    isVisibleOnContact: !!checked,
-                  }))
-                }
-              />
-              <Label htmlFor="isVisibleOnContact" className="text-sm">
-                Quero aparecer na página de contato do site (após aprovação)
-              </Label>
             </div>
 
             <Button
