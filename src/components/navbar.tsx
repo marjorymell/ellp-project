@@ -19,14 +19,14 @@ export default function Navbar() {
 
   if (loading) {
     return (
-      <nav className="shadow-sm" style={{ backgroundColor: "#0075CA" }}>
+      <nav className="shadow-sm bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-21">
+          <div className="flex justify-between h-16">
             <div className="flex items-center">
-              <div className="animate-pulse bg-blue-300 h-8 w-32 rounded"></div>
+              <div className="animate-pulse bg-gray-200 h-8 w-32 rounded"></div>
             </div>
             <div className="flex items-center">
-              <div className="animate-pulse bg-blue-300 h-8 w-20 rounded"></div>
+              <div className="animate-pulse bg-gray-200 h-8 w-20 rounded"></div>
             </div>
           </div>
         </div>
@@ -35,200 +35,70 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="shadow-sm" style={{ backgroundColor: "#0075CA" }}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
-        <div className="flex justify-between h-21">
+    <nav className="shadow-sm bg-white border-b border-gray-200 sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-16">
           <div className="flex items-center">
-            <Link href="/" className="flex-items-center">
-            <Image src="/ellp_logo.png" alt="ELLP Project" width={120} height={40} className="h-18 w-auto" priority />
+            <Link href="/" className="flex items-center hover:opacity-80 transition-opacity">
+              <Image src="/ellp_logo.png" alt="ELLP Project" width={120} height={40} className="h-10 w-auto" priority />
             </Link>
           </div>
-          <div className="flex items-center space-x-4">
-            <Link href="/"
-              className="transition-colors duration-200 border-2 border-[#F58E2F] px-3 py-1 rounded-lg"
-              style={{ color: "#F58E2F" , fontSize: "17px" }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = "#ffcc99",
-                e.currentTarget.style.borderColor = "#ffcc99"
-                e.currentTarget.style.backgroundColor = "rgba(112, 195, 255, 0.2)"
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = "#F58E2F",
-                e.currentTarget.style.borderColor = "#F58E2F"
-                e.currentTarget.style.backgroundColor = "transparent"
-              }}>
-              <b>Início</b>
+
+          <div className="flex items-center space-x-6">
+            <Link href="/" className="ellp-nav-link">
+              Início
             </Link>
-            <Link href="/contato"
-              className="transition-colors duration-200 border-2 border-[#F58E2F] px-3 py-1 rounded-lg"
-              style={{ color: "#F58E2F", fontSize: "17px" }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = "#ffcc99"
-                e.currentTarget.style.borderColor = "#ffcc99"
-                e.currentTarget.style.backgroundColor = "rgba(112, 195, 255, 0.2)"
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = "#F58E2F"
-                e.currentTarget.style.borderColor =  "#F58E2F"
-                e.currentTarget.style.backgroundColor = "transparent"
-              }}>
-              <b>Contato</b>
+            <Link href="/contato" className="ellp-nav-link">
+              Contato
             </Link>
 
             {user ? (
-              <div className="flex items-center space-x-2">
-                <Link href="/workshops/new">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="text-white transition-colors duration-200"
-                    style={{
-                        backgroundColor: "#F58E2F",
-                        borderColor: "#F58E2F"}}
-
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = "#ffa34f"
-                      e.currentTarget.style.borderColor = "#ffa34f"
-                      e.currentTarget.style.color = "white"
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = "#F58E2F"
-                      e.currentTarget.style.borderColor = "#F58E2F"
-                      e.currentTarget.style.color = "white"
-                    }}
-                  >
+              <div className="flex items-center space-x-3">
+                <Button className="ellp-button-primary" asChild>
+                  <Link href="/workshops/new">
                     <Plus className="w-4 h-4 mr-2" />
                     Nova Oficina
-                  </Button>
-                </Link>
+                  </Link>
+                </Button>
 
                 {user.role === "admin" && (
-                  <Link href="/admin">
-                    <Button
-                      variant="outline"
-                    size="sm"
-                    className="text-white transition-colors duration-200"
-                    style={{
-                        backgroundColor: "#F58E2F",
-                         borderColor: "#F58E2F"}}
-                    
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = "#ffa34f"
-                      e.currentTarget.style.borderColor = "#ffa34f"
-                      e.currentTarget.style.color = "white"
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = "#F58E2F"
-                      e.currentTarget.style.borderColor = "#F58E2F"
-                      e.currentTarget.style.color = "white"
-                    }}
-                    >
+                  <Button className="ellp-button-secondary" asChild>
+                    <Link href="/admin">
                       <Settings className="w-4 h-4 mr-2" />
-                      Administração
-                    </Button>
-                  </Link>
+                      Admin
+                    </Link>
+                  </Button>
                 )}
 
                 {user.role === "volunteer" && (
-                  <Link href="/volunteer">
-                    <Button
-                    variant="outline"
-                    size="sm"
-                    className="text-white transition-colors duration-200"
-                    style={{
-                        backgroundColor: "#F58E2F",
-                         borderColor: "#F58E2F"}}
-                    
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = "#ffa34f"
-                      e.currentTarget.style.borderColor = "#ffa34f"
-                      e.currentTarget.style.color = "white"
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = "#F58E2F"
-                      e.currentTarget.style.borderColor = "#F58E2F"
-                      e.currentTarget.style.color = "white"
-                    }}
-                    >
+                  <Button className="ellp-button-secondary" asChild>
+                    <Link href="/volunteer">
                       <User className="w-4 h-4 mr-2" />
                       Minhas Oficinas
-                    </Button>
-                  </Link>
+                    </Link>
+                  </Button>
                 )}
 
                 <Button
-                onClick={handleLogout}
+                  onClick={handleLogout}
                   variant="outline"
-                    size="sm"
-                    className="text-white transition-colors duration-200"
-                    style={{
-                        backgroundColor: "#d1002d",
-                         borderColor: "#d1002d"}}
-
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = "#ff5145"
-                      e.currentTarget.style.borderColor = "#ff5145"
-                      e.currentTarget.style.color = "white"
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = "#d1002d"
-                      e.currentTarget.style.borderColor = "#d1002d"
-                      e.currentTarget.style.color = "white"
-                    }}
+                  className="border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition-all duration-300 bg-transparent"
                 >
                   <LogOut className="w-4 h-4 mr-2" />
                   Sair
                 </Button>
               </div>
             ) : (
-              <div className="flex items-center space-x-2">
-                <Link href="/register">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="text-white transition-colors duration-200"
-                    style={{
-                        backgroundColor: "#F58E2F",
-                         borderColor: "#F58E2F"}}
-                    
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = "#ffa34f"
-                      e.currentTarget.style.borderColor = "#ffa34f"
-                      e.currentTarget.style.color = "white"
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = "#F58E2F"
-                      e.currentTarget.style.borderColor = "#F58E2F"
-                      e.currentTarget.style.color = "white"
-                    }}
-                  >
+              <div className="flex items-center space-x-3">
+                <Button className="ellp-button-primary" asChild>
+                  <Link href="/register">
                     <UserPlus className="w-4 h-4 mr-2" />
                     Registrar
-                  </Button>
-                </Link>
-                <Link href="/login">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="text-white transition-colors duration-200"
-                    style={{
-                        backgroundColor: "#F58E2F",
-                         borderColor: "#F58E2F"}}
-                    
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = "#ffa34f"
-                      e.currentTarget.style.borderColor = "#ffa34f"
-                      e.currentTarget.style.color = "white"
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = "#F58E2F"
-                      e.currentTarget.style.borderColor = "#F58E2F"
-                      e.currentTarget.style.color = "white"
-                    }}
-                  >
-                    Login
-                  </Button>
-                </Link>
+                  </Link>
+                </Button>
+                <Button className="ellp-button-secondary" asChild>
+                  <Link href="/login">Login</Link>
+                </Button>
               </div>
             )}
           </div>

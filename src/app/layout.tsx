@@ -21,12 +21,12 @@ export default function RootLayout({
     <html lang="pt-BR">
       <body className={inter.className}>
         <AuthProvider>
-          <Navbar />
-          <main className="min-h-screen bg-gray-50">{children}</main>
+          <div className="min-h-screen bg-white">
+            <Navbar />
+            <main className="bg-white">{children}</main>
+          </div>
         </AuthProvider>
       </body>
     </html>
   )
 }
-
-
