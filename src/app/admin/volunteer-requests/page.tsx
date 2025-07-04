@@ -60,7 +60,6 @@ export default function VolunteerRequestsPage() {
 
   const fetchUsers = async () => {
     try {
-      // Buscar usuários pendentes
       const pendingQuery = query(
         collection(db, "users"),
         where("status", "==", "pending")
@@ -71,7 +70,6 @@ export default function VolunteerRequestsPage() {
         ...doc.data(),
       })) as User[];
 
-      // Buscar usuários rejeitados (para histórico)
       const rejectedQuery = query(
         collection(db, "users"),
         where("status", "==", "rejected")
@@ -82,7 +80,6 @@ export default function VolunteerRequestsPage() {
         ...doc.data(),
       })) as User[];
 
-      // Ordenar por data de criação (mais recentes primeiro)
       pendingData.sort(
         (a, b) =>
           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
@@ -105,14 +102,12 @@ export default function VolunteerRequestsPage() {
     setProcessingId(userToApprove.id);
 
     try {
-      // Perguntar ao admin se o usuário deve aparecer na página de contato
       const shouldBeVisible = confirm(
         `Aprovar ${userToApprove.name} como voluntário?\n\n` +
           `Clique "OK" para aprovar E incluir na página de contato\n` +
           `Clique "Cancelar" para aprovar MAS NÃO incluir na página de contato`
       );
 
-      // Se o usuário cancelar, perguntar se ainda quer aprovar
       let finalApproval = shouldBeVisible;
       if (!shouldBeVisible) {
         finalApproval = confirm(
@@ -126,10 +121,9 @@ export default function VolunteerRequestsPage() {
         return;
       }
 
-      // Atualizar status do usuário para "active"
       await updateDoc(doc(db, "users", userToApprove.id), {
         status: "active",
-        isVisibleOnContact: shouldBeVisible, // Definir baseado na escolha do admin
+        isVisibleOnContact: shouldBeVisible, 
         approvedAt: new Date().toISOString(),
         approvedBy: user?.uid,
       });
@@ -240,7 +234,6 @@ export default function VolunteerRequestsPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-green-600">
-              {/* Buscar usuários ativos seria necessário uma query adicional */}
               -
             </div>
           </CardContent>
@@ -259,7 +252,6 @@ export default function VolunteerRequestsPage() {
         </Card>
       </div>
 
-      {/* Usuários Pendentes */}
       {pendingUsers.length > 0 && (
         <Card className="mb-8">
           <CardHeader>
@@ -386,7 +378,6 @@ export default function VolunteerRequestsPage() {
         </Card>
       )}
 
-      {/* Usuários Rejeitados */}
       {processedUsers.length > 0 && (
         <Card>
           <CardHeader>

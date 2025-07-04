@@ -5,8 +5,33 @@ import { collection, getDocs, query, where } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 import type { User } from "@/lib/types"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Mail } from "lucide-react"
+import { Mail, Users, Star } from "lucide-react"
 import Image from "next/image"
+
+const getInitials = (name: string) => {
+  return name
+    .split(" ")
+    .map((word) => word.charAt(0))
+    .join("")
+    .toUpperCase()
+    .slice(0, 2) 
+}
+
+const getAvatarColor = (name: string) => {
+  const colors = [
+    "bg-blue-500",
+    "bg-green-500",
+    "bg-purple-500",
+    "bg-pink-500",
+    "bg-indigo-500",
+    "bg-yellow-500",
+    "bg-red-500",
+    "bg-teal-500",
+  ]
+
+  const index = name.charCodeAt(0) % colors.length
+  return colors[index]
+}
 
 export default function ContactPage() {
   const [users, setUsers] = useState<User[]>([])
@@ -34,58 +59,86 @@ export default function ContactPage() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen" style={{ backgroundColor: "#E3F2FF" }}>
-        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-600"></div>
+      <div className="flex justify-center items-center min-h-screen bg-white">
+        <div className="ellp-spinner w-12 h-12"></div>
       </div>
     )
   }
 
   return (
-      <div className="min-h-screen w-full" style={{ backgroundColor: "#E3F2FF" }}>
-       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Nossa Equipe</h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-          Conheça os voluntários e administradores que tornam o projeto ELLP possível
-          </p>
+    <div className="min-h-screen bg-white">
+      <section className="ellp-gradient py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="fade-in">
+            <Users className="w-16 h-16 text-white mx-auto mb-6" />
+            <h1 className="text-4xl font-bold text-white mb-4">Nossa Equipe</h1>
+            <p className="text-xl text-white/90 max-w-3xl mx-auto">
+              Conheça os voluntários e administradores que tornam o projeto ELLP possível
+            </p>
+          </div>
         </div>
-      </div>
+      </section>
 
-      {users.length === 0 ? (
-        <div className="text-center py-12">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">Nenhum membro da equipe disponível</h2>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-30">
-          {users.map((user) => (
-            <Card key={user.id} className="text-center p-6 bg-white hover:shadow-[0_4px_20px_-2px_rgba(245,142,47,0.6)] transition-shadow">
-              <CardHeader>
-                <div className="relative w-24 h-24 mx-auto mb-4">
-                  <Image
-                    src={user.photo || "/placeholder.svg?height=96&width=96"}
-                    alt={user.name}
-                    fill
-                    className="rounded-full object-cover"
-                  />
-                </div>
-                <CardTitle>{user.name}</CardTitle>
-                <p className="text-sm text-gray-600">{user.course}</p>
-                <p className="text-xs text-blue-600 font-medium">
-                  {user.role === "admin" ? "Administrador" : "Voluntário"}
-                </p>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center justify-center text-sm text-gray-600">
-                  <Mail className="w-4 h-4 mr-2" />
-                  <a href={`mailto:${user.email}`} className="hover:text-blue-600">
-                    {user.email}
-                  </a>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      )}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        {users.length === 0 ? (
+          <Card className="text-center py-16">
+            <CardContent>
+              <Users className="w-16 h-16 mx-auto mb-6 text-gray-400" />
+              <h2 className="text-2xl font-semibold text-[#062b5b] mb-4">Nenhum membro da equipe disponível</h2>
+              <p className="text-gray-600">Os membros da equipe aparecerão aqui em breve.</p>
+            </CardContent>
+          </Card>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {users.map((user, index) => (
+              <div key={user.id} className="slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
+                <Card className="ellp-card text-center p-6 h-full">
+                  <CardHeader>
+                    <div className="relative w-24 h-24 mx-auto mb-4">
+                      {user.photo ? (
+                        <Image
+                          src={user.photo || "/placeholder.svg"}
+                          alt={user.name}
+                          fill
+                          className="rounded-full object-cover border-4 border-[#f58e2f]/20"
+                        />
+                      ) : (
+                        <div
+                          className={`w-24 h-24 rounded-full ${getAvatarColor(user.name)} flex items-center justify-center border-4 border-[#f58e2f]/20`}
+                        >
+                          <span className="text-white text-xl font-bold">{getInitials(user.name)}</span>
+                        </div>
+                      )}
+                      {user.role === "admin" && (
+                        <div className="absolute -top-1 -right-1 bg-[#f58e2f] rounded-full p-1">
+                          <Star className="w-3 h-3 text-white" />
+                        </div>
+                      )}
+                    </div>
+                    <CardTitle className="text-[#062b5b] text-xl">{user.name}</CardTitle>
+                    <p className="text-gray-600 font-medium">{user.course}</p>
+                    <span
+                      className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${
+                        user.role === "admin" ? "bg-[#f58e2f]/10 text-[#f58e2f]" : "bg-[#0075ca]/10 text-[#0075ca]"
+                      }`}
+                    >
+                      {user.role === "admin" ? "Administrador" : "Voluntário"}
+                    </span>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex items-center justify-center text-gray-600 hover:text-[#0075ca] transition-colors">
+                      <Mail className="w-4 h-4 mr-2" />
+                      <a href={`mailto:${user.email}`} className="hover:underline text-sm">
+                        {user.email}
+                      </a>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   )
 }

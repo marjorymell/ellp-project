@@ -39,7 +39,6 @@ export default function RegisterPage() {
     setLoading(true);
     setError("");
 
-    // Validações
     if (formData.password !== formData.confirmPassword) {
       setError("As senhas não coincidem");
       setLoading(false);
@@ -71,40 +70,29 @@ export default function RegisterPage() {
     }
 
     try {
-      console.log("🔄 Criando conta de voluntário...");
-      console.log("📧 Email:", formData.email);
 
-      // Criar usuário no Firebase Auth
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         formData.email,
         formData.password
       );
-      console.log(
-        "✅ Usuário criado no Authentication:",
-        userCredential.user.uid
-      );
 
-      // Criar documento do usuário com status "pending"
       const userData = {
         name: formData.name.trim(),
         email: formData.email.trim().toLowerCase(),
         course: formData.course.trim(),
         photo: formData.photo.trim() || "",
         role: "volunteer",
-        isVisibleOnContact: false, // Sempre false inicialmente, só true após aprovação
-        status: "pending", // Conta criada mas pendente de aprovação
+        isVisibleOnContact: false, 
+        status: "pending", 
         createdAt: new Date().toISOString(),
       };
 
       await setDoc(doc(db, "users", userCredential.user.uid), userData);
-      console.log("✅ Documento criado no Firestore:", userData);
 
       setSuccess(true);
     } catch (error: any) {
-      console.error("❌ Erro ao criar conta:", error);
 
-      // Mensagens de erro específicas
       let errorMessage = error.message;
       if (error.code === "auth/email-already-in-use") {
         errorMessage =

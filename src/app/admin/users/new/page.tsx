@@ -51,14 +51,12 @@ export default function NewUserPage() {
     setError("");
 
     try {
-      // Criar usuário no Firebase Auth
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         formData.email,
         formData.password
       );
 
-      // Criar documento no Firestore
       await setDoc(doc(db, "users", userCredential.user.uid), {
         name: formData.name,
         email: formData.email,
