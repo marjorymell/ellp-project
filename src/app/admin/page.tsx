@@ -12,6 +12,34 @@ import { Plus, Edit, Trash2, Users, FileText, Clock, UserCheck, Settings, AlertC
 import Link from "next/link"
 import Image from "next/image"
 
+// Função para gerar as iniciais do nome
+const getInitials = (name: string) => {
+  return name
+    .split(" ")
+    .map((word) => word.charAt(0))
+    .join("")
+    .toUpperCase()
+    .slice(0, 2) // Máximo 2 iniciais
+}
+
+// Função para gerar uma cor baseada no nome
+const getAvatarColor = (name: string) => {
+  const colors = [
+    "bg-blue-500",
+    "bg-green-500",
+    "bg-purple-500",
+    "bg-pink-500",
+    "bg-indigo-500",
+    "bg-yellow-500",
+    "bg-red-500",
+    "bg-teal-500",
+  ]
+
+  // Usar o código do primeiro caractere para escolher uma cor
+  const index = name.charCodeAt(0) % colors.length
+  return colors[index]
+}
+
 export default function AdminPage() {
   const { user, loading } = useAuth()
   const router = useRouter()
@@ -269,18 +297,23 @@ export default function AdminPage() {
           <CardContent>
             <div className="space-y-4">
               {users.map((user) => (
-                <div
-                  key={user.id}
-                  className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-[#f58e2f] transition-colors"
-                >
+                <div key={user.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
                   <div className="flex items-center space-x-4">
                     <div className="relative w-12 h-12">
-                      <Image
-                        src={user.photo || "/placeholder.svg?height=48&width=48"}
-                        alt={user.name}
-                        fill
-                        className="rounded-full object-cover"
-                      />
+                      {user.photo ? (
+                        <Image
+                          src={user.photo || "/placeholder.svg"}
+                          alt={user.name}
+                          fill
+                          className="rounded-full object-cover"
+                        />
+                      ) : (
+                        <div
+                          className={`w-12 h-12 rounded-full ${getAvatarColor(user.name)} flex items-center justify-center`}
+                        >
+                          <span className="text-white text-sm font-bold">{getInitials(user.name)}</span>
+                        </div>
+                      )}
                     </div>
                     <div>
                       <h3 className="font-medium text-[#062b5b]">{user.name}</h3>
@@ -332,10 +365,7 @@ export default function AdminPage() {
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {workshops.map((workshop) => (
-                <div
-                  key={workshop.id}
-                  className="border border-gray-200 rounded-lg overflow-hidden hover:border-[#f58e2f] transition-colors ellp-card-hover"
-                >
+                <div key={workshop.id} className="border border-gray-200 rounded-lg overflow-hidden">
                   <div className="relative h-32">
                     <Image
                       src={workshop.image || "/placeholder.svg?height=128&width=256"}

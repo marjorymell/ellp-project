@@ -8,6 +8,34 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Mail, Users, Star } from "lucide-react"
 import Image from "next/image"
 
+// Função para gerar as iniciais do nome
+const getInitials = (name: string) => {
+  return name
+    .split(" ")
+    .map((word) => word.charAt(0))
+    .join("")
+    .toUpperCase()
+    .slice(0, 2) // Máximo 2 iniciais
+}
+
+// Função para gerar uma cor baseada no nome
+const getAvatarColor = (name: string) => {
+  const colors = [
+    "bg-blue-500",
+    "bg-green-500",
+    "bg-purple-500",
+    "bg-pink-500",
+    "bg-indigo-500",
+    "bg-yellow-500",
+    "bg-red-500",
+    "bg-teal-500",
+  ]
+
+  // Usar o código do primeiro caractere para escolher uma cor
+  const index = name.charCodeAt(0) % colors.length
+  return colors[index]
+}
+
 export default function ContactPage() {
   const [users, setUsers] = useState<User[]>([])
   const [loading, setLoading] = useState(true)
@@ -71,12 +99,20 @@ export default function ContactPage() {
                 <Card className="ellp-card text-center p-6 h-full">
                   <CardHeader>
                     <div className="relative w-24 h-24 mx-auto mb-4">
-                      <Image
-                        src={user.photo || "/placeholder.svg?height=96&width=96"}
-                        alt={user.name}
-                        fill
-                        className="rounded-full object-cover border-4 border-[#f58e2f]/20"
-                      />
+                      {user.photo ? (
+                        <Image
+                          src={user.photo || "/placeholder.svg"}
+                          alt={user.name}
+                          fill
+                          className="rounded-full object-cover border-4 border-[#f58e2f]/20"
+                        />
+                      ) : (
+                        <div
+                          className={`w-24 h-24 rounded-full ${getAvatarColor(user.name)} flex items-center justify-center border-4 border-[#f58e2f]/20`}
+                        >
+                          <span className="text-white text-xl font-bold">{getInitials(user.name)}</span>
+                        </div>
+                      )}
                       {user.role === "admin" && (
                         <div className="absolute -top-1 -right-1 bg-[#f58e2f] rounded-full p-1">
                           <Star className="w-3 h-3 text-white" />

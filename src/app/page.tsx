@@ -6,7 +6,7 @@ import { db, isUsingRealFirebase } from "../lib/firebase"
 import type { Workshop } from "../lib/types"
 import WorkshopCard from "../components/workshop-card"
 import { Alert, AlertDescription } from "../components/ui/alert"
-import { AlertTriangle, Users, BookOpen, Calendar, Sparkles } from "lucide-react"
+import { AlertTriangle, Calendar, Sparkles, Target, Users, Lightbulb } from "lucide-react"
 import Link from "next/link"
 import { Button } from "../components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card"
@@ -99,60 +99,54 @@ export default function HomePage() {
       </section>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        {/* Call to Action Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16 slide-up">
-          <Card className="ellp-card text-center p-6">
-            <CardHeader>
-              <BookOpen className="w-12 h-12 mx-auto mb-4 text-[#f58e2f]" />
-              <CardTitle className="text-xl text-[#062b5b]">Participe das Oficinas</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-600 mb-6">
-                Explore nossas oficinas de programação e aprenda de forma divertida e interativa.
-              </p>
-              <Button
-                className="ellp-button-secondary w-full cursor-pointer"
-                onClick={() => {
-                  document.getElementById("workshops")?.scrollIntoView({
-                    behavior: "smooth",
-                  })
-                }}
-              >
-                Ver Oficinas
-              </Button>
-            </CardContent>
-          </Card>
+        {/* Sobre o Projeto */}
+        <section className="mb-16 slide-up">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-[#062b5b] mb-4">Sobre o Projeto ELLP</h2>
+            <div className="w-24 h-1 bg-[#f58e2f] mx-auto rounded-full"></div>
+          </div>
 
-          <Card className="ellp-card text-center p-6">
-            <CardHeader>
-              <Users className="w-12 h-12 mx-auto mb-4 text-[#f58e2f]" />
-              <CardTitle className="text-xl text-[#062b5b]">Seja um Voluntário</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-600 mb-6">
-                Junte-se à nossa equipe e ajude a ensinar programação para outros estudantes.
-              </p>
-              <Button className="ellp-button-primary w-full cursor-pointer" asChild>
-                <Link href="/register">Registrar-se</Link>
-              </Button>
-            </CardContent>
-          </Card>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <Card className="ellp-card text-center p-6">
+              <CardHeader>
+                <Target className="w-12 h-12 mx-auto mb-4 text-[#f58e2f]" />
+                <CardTitle className="text-xl text-[#062b5b]">Nossa Missão</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600">
+                  Tornar o aprendizado de lógica de programação mais acessível e divertido através de metodologias
+                  lúdicas e interativas.
+                </p>
+              </CardContent>
+            </Card>
 
-          <Card className="ellp-card text-center p-6">
-            <CardHeader>
-              <Calendar className="w-12 h-12 mx-auto mb-4 text-[#f58e2f]" />
-              <CardTitle className="text-xl text-[#062b5b]">Crie Oficinas</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-600 mb-6">
-                Voluntários podem criar e divulgar suas próprias oficinas na plataforma.
-              </p>
-              <Button className="ellp-button-secondary w-full cursor-pointer" asChild>
-                <Link href="/login">Fazer Login</Link>
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
+            <Card className="ellp-card text-center p-6">
+              <CardHeader>
+                <Lightbulb className="w-12 h-12 mx-auto mb-4 text-[#f58e2f]" />
+                <CardTitle className="text-xl text-[#062b5b]">Metodologia</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600">
+                  Utilizamos jogos, desafios práticos e atividades interativas para ensinar conceitos fundamentais de
+                  programação.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="ellp-card text-center p-6">
+              <CardHeader>
+                <Users className="w-12 h-12 mx-auto mb-4 text-[#f58e2f]" />
+                <CardTitle className="text-xl text-[#062b5b]">Comunidade</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600">
+                  Uma rede de voluntários dedicados a compartilhar conhecimento e criar um ambiente de aprendizado
+                  colaborativo.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
 
         {/* Error Alert */}
         {error && (
