@@ -30,7 +30,6 @@ export default function SetupAdminPage() {
     setLoading(true)
     setError("")
 
-    // Validações
     if (formData.password !== formData.confirmPassword) {
       setError("As senhas não coincidem")
       setLoading(false)
@@ -50,14 +49,12 @@ export default function SetupAdminPage() {
     }
 
     try {
-      console.log("🔄 Criando administrador...")
-      console.log("📧 Email:", formData.email)
+      console.log("Criando administrador...")
+      console.log("Email:", formData.email)
 
-      // Criar usuário no Authentication
       const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password)
-      console.log("✅ Usuário criado no Authentication:", userCredential.user.uid)
+      console.log("Usuário criado no Authentication:", userCredential.user.uid)
 
-      // Criar documento no Firestore
       const userData = {
         name: formData.name.trim(),
         email: formData.email.trim(),
@@ -69,14 +66,13 @@ export default function SetupAdminPage() {
       }
 
       await setDoc(doc(db, "users", userCredential.user.uid), userData)
-      console.log("✅ Administrador criado no Firestore:", userData)
+      console.log("Administrador criado no Firestore:", userData)
 
-      alert("✅ Administrador criado com sucesso! Você será redirecionado para fazer login.")
+      alert("Administrador criado com sucesso! Você será redirecionado para fazer login.")
       router.push("/login")
     } catch (error: any) {
       console.error("❌ Erro ao criar administrador:", error)
 
-      // Mensagens de erro específicas
       let errorMessage = error.message
       if (error.code === "auth/email-already-in-use") {
         errorMessage = "Este email já está em uso. Tente fazer login ou use outro email."

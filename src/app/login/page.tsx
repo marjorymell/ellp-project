@@ -38,7 +38,6 @@ export default function LoginPage() {
     } catch (error: any) {
       console.error("❌ Erro no login:", error)
 
-      // Mensagens de erro específicas
       let errorMessage = "Email ou senha incorretos"
       if (error.code === "auth/user-not-found") {
         errorMessage = "Usuário não encontrado. Verifique o email ou crie uma conta."

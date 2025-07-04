@@ -26,7 +26,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Se o Firebase não estiver configurado, apenas definir loading como false
     if (!isUsingRealFirebase || !auth) {
       console.log("Firebase não configurado, modo demonstração");
       setLoading(false);
