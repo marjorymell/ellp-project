@@ -44,7 +44,8 @@ export default function Navbar() {
             </Link>
           </div>
 
-          <div className="flex items-center space-x-6">
+          <div className="flex items-center space-x-4">
+            {/* Links de navegação com tamanhos padronizados */}
             <Link href="/" className="ellp-nav-link">
               Início
             </Link>
@@ -54,7 +55,7 @@ export default function Navbar() {
 
             {user ? (
               <div className="flex items-center space-x-3">
-                <Button className="ellp-button-primary" asChild>
+                <Button className="ellp-header-button ellp-header-button-primary" asChild>
                   <Link href="/workshops/new">
                     <Plus className="w-4 h-4 mr-2" />
                     Nova Oficina
@@ -62,7 +63,7 @@ export default function Navbar() {
                 </Button>
 
                 {user.role === "admin" && (
-                  <Button className="ellp-button-secondary" asChild>
+                  <Button className="ellp-header-button ellp-header-button-secondary" asChild>
                     <Link href="/admin">
                       <Settings className="w-4 h-4 mr-2" />
                       Admin
@@ -71,7 +72,7 @@ export default function Navbar() {
                 )}
 
                 {user.role === "volunteer" && (
-                  <Button className="ellp-button-secondary" asChild>
+                  <Button className="ellp-header-button ellp-header-button-secondary" asChild>
                     <Link href="/volunteer">
                       <User className="w-4 h-4 mr-2" />
                       Minhas Oficinas
@@ -79,24 +80,20 @@ export default function Navbar() {
                   </Button>
                 )}
 
-                <Button
-                  onClick={handleLogout}
-                  variant="outline"
-                  className="border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition-all duration-300 bg-transparent"
-                >
+                <Button onClick={handleLogout} className="ellp-header-button ellp-header-button-outline">
                   <LogOut className="w-4 h-4 mr-2" />
                   Sair
                 </Button>
               </div>
             ) : (
               <div className="flex items-center space-x-3">
-                <Button className="ellp-button-primary" asChild>
+                <Button className="ellp-header-button ellp-header-button-primary" asChild>
                   <Link href="/register">
                     <UserPlus className="w-4 h-4 mr-2" />
                     Registrar
                   </Link>
                 </Button>
-                <Button className="ellp-button-secondary" asChild>
+                <Button className="ellp-header-button ellp-header-button-secondary" asChild>
                   <Link href="/login">Login</Link>
                 </Button>
               </div>

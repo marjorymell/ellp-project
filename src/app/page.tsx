@@ -76,7 +76,7 @@ export default function HomePage() {
             </p>
             <div className="flex justify-center space-x-4">
               <Button
-                className="ellp-button-primary text-lg px-8 py-3"
+                className="ellp-button-hero text-lg px-8 py-3 shine-effect cursor-pointer"
                 onClick={() => {
                   document.getElementById("workshops")?.scrollIntoView({
                     behavior: "smooth",
@@ -88,7 +88,7 @@ export default function HomePage() {
               </Button>
               <Button
                 variant="outline"
-                className="text-lg px-8 py-3 bg-white/10 border-white text-white hover:bg-white hover:text-[#0075ca]"
+                className="text-lg px-8 py-3 bg-white/10 border-white text-white hover:bg-white hover:text-[#0075ca] transition-all duration-300 hover:scale-105 cursor-pointer"
                 asChild
               >
                 <Link href="/register">Seja Voluntário</Link>
@@ -111,7 +111,7 @@ export default function HomePage() {
                 Explore nossas oficinas de programação e aprenda de forma divertida e interativa.
               </p>
               <Button
-                className="ellp-button-secondary w-full"
+                className="ellp-button-secondary w-full cursor-pointer"
                 onClick={() => {
                   document.getElementById("workshops")?.scrollIntoView({
                     behavior: "smooth",
@@ -132,7 +132,7 @@ export default function HomePage() {
               <p className="text-gray-600 mb-6">
                 Junte-se à nossa equipe e ajude a ensinar programação para outros estudantes.
               </p>
-              <Button className="ellp-button-primary w-full" asChild>
+              <Button className="ellp-button-primary w-full cursor-pointer" asChild>
                 <Link href="/register">Registrar-se</Link>
               </Button>
             </CardContent>
@@ -147,7 +147,7 @@ export default function HomePage() {
               <p className="text-gray-600 mb-6">
                 Voluntários podem criar e divulgar suas próprias oficinas na plataforma.
               </p>
-              <Button className="ellp-button-secondary w-full" asChild>
+              <Button className="ellp-button-secondary w-full cursor-pointer" asChild>
                 <Link href="/login">Fazer Login</Link>
               </Button>
             </CardContent>
@@ -161,7 +161,7 @@ export default function HomePage() {
             <AlertDescription>
               {error}
               <br />
-              <Link href="/debug-config" className="underline">
+              <Link href="/debug-config" className="underline cursor-pointer">
                 Verificar configuração
               </Link>
             </AlertDescription>
@@ -184,11 +184,11 @@ export default function HomePage() {
                   Fique atento! Novas oficinas serão divulgadas em breve.
                 </p>
                 <div className="flex justify-center space-x-4">
-                  <Button className="ellp-button-primary" asChild>
+                  <Button className="ellp-button-primary cursor-pointer" asChild>
                     <Link href="/register">Registrar-se como Voluntário</Link>
                   </Button>
                   {!isUsingRealFirebase && (
-                    <Button variant="outline" asChild>
+                    <Button variant="outline" className="cursor-pointer bg-transparent" asChild>
                       <Link href="/setup-admin">Configurar Administrador</Link>
                     </Button>
                   )}
