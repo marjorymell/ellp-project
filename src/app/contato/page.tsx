@@ -8,17 +8,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Mail, Users, Star } from "lucide-react"
 import Image from "next/image"
 
-// Função para gerar as iniciais do nome
 const getInitials = (name: string) => {
   return name
     .split(" ")
     .map((word) => word.charAt(0))
     .join("")
     .toUpperCase()
-    .slice(0, 2) // Máximo 2 iniciais
+    .slice(0, 2) 
 }
 
-// Função para gerar uma cor baseada no nome
 const getAvatarColor = (name: string) => {
   const colors = [
     "bg-blue-500",
@@ -31,7 +29,6 @@ const getAvatarColor = (name: string) => {
     "bg-teal-500",
   ]
 
-  // Usar o código do primeiro caractere para escolher uma cor
   const index = name.charCodeAt(0) % colors.length
   return colors[index]
 }
@@ -70,7 +67,6 @@ export default function ContactPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section */}
       <section className="ellp-gradient py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="fade-in">

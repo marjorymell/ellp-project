@@ -45,7 +45,6 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center space-x-4">
-            {/* Links de navegação com tamanhos padronizados */}
             <Link href="/" className="ellp-nav-link">
               Início
             </Link>
