@@ -10,6 +10,7 @@ import { AlertTriangle, Calendar, Sparkles, Target, Users, Lightbulb } from "luc
 import Link from "next/link"
 import { Button } from "../components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card"
+import Footer from "../components/footer"
 
 export default function HomePage() {
   const [workshops, setWorkshops] = useState<Workshop[]>([])
@@ -98,7 +99,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div id='sobre' className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         {/* Sobre o Projeto */}
         <section className="mb-16 slide-up">
           <div className="text-center mb-12">
@@ -109,7 +110,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <Card className="ellp-card text-center p-6">
               <CardHeader>
-                <Target className="w-12 h-12 mx-auto mb-4 text-[#f58e2f]" />
+                <Target className="w-12 h-12 mx-auto mb-4 text-[#f58e2f] ellp-icon" />
                 <CardTitle className="text-xl text-[#062b5b]">Nossa Missão</CardTitle>
               </CardHeader>
               <CardContent>
@@ -122,7 +123,7 @@ export default function HomePage() {
 
             <Card className="ellp-card text-center p-6">
               <CardHeader>
-                <Lightbulb className="w-12 h-12 mx-auto mb-4 text-[#f58e2f]" />
+                <Lightbulb className="w-12 h-12 mx-auto mb-4 text-[#f58e2f] ellp-icon" />
                 <CardTitle className="text-xl text-[#062b5b]">Metodologia</CardTitle>
               </CardHeader>
               <CardContent>
@@ -135,7 +136,7 @@ export default function HomePage() {
 
             <Card className="ellp-card text-center p-6">
               <CardHeader>
-                <Users className="w-12 h-12 mx-auto mb-4 text-[#f58e2f]" />
+                <Users className="w-12 h-12 mx-auto mb-4 text-[#f58e2f] ellp-icon" />
                 <CardTitle className="text-xl text-[#062b5b]">Comunidade</CardTitle>
               </CardHeader>
               <CardContent>
@@ -222,6 +223,7 @@ export default function HomePage() {
           </Card>
         )}
       </div>
+      <Footer />
     </div>
   )
 }

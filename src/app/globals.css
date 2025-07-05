@@ -132,7 +132,16 @@
 
 /* Utilitários personalizados */
 .ellp-gradient {
-  background: linear-gradient(135deg, #0075ca 0%, #0070cf 100%);
+  background: linear-gradient(135deg, #0075CA 0%, #062b5b 50%, #0075CA 100%);
+  background-size: 200% 200%;
+  animation: gradientMove 8s ease infinite;
+}
+
+/* gradiente do hero section */
+@keyframes gradientMove {
+  0% { background-position: 0% 50% }
+  50% { background-position: 100% 50% }
+  100% { background-position: 0% 50% }
 }
 
 .ellp-card-hover {
@@ -401,4 +410,102 @@
     opacity: 0;
     transform: translateX(100%) translateY(100%) rotate(45deg);
   }
+}
+
+/* gradiente para páginas de login e registro*/
+.gradient-bg {
+  background: linear-gradient(-45deg, #0075ca, #f58e2f, #abdbff);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* elementos para página de redes */
+.ellp-button-instagram {
+  background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D);
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.ellp-button-instagram:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(225, 48, 108, 0.3);
+}
+
+.ellp-button-github {
+  background: #333;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.ellp-button-github:hover {
+  background: #444;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.ellp-button-linkedin {
+  background: #0077b5;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.ellp-button-linkedin:hover {
+  background: #006097;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 119, 181, 0.3);
+}
+
+.ellp-button-website {
+  background: #0075CA;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.ellp-button-website:hover {
+  background: #0062a8;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 119, 181, 0.3);
+}
+
+/* animação de icons */
+.ellp-icon {
+  transition: all 0.3s ease;
+}
+
+.ellp-icon:hover {
+  transform: rotate(10deg) scale(1.1);
+  filter: drop-shadow(0 4px 6px rgba(245, 142, 47, 0.3));
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f8f8f8;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #0075CA; 
+  border-radius: 10px;
+  border: 2px solid white;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #F58E2F; 
+  transform: scaleX(1.05);
 }

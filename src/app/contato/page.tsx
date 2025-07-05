@@ -7,6 +7,7 @@ import type { User } from "@/lib/types"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Mail, Users, Star } from "lucide-react"
 import Image from "next/image"
+import Footer from "@/components/footer"
 
 const getInitials = (name: string) => {
   return name
@@ -139,6 +140,7 @@ export default function ContactPage() {
           </div>
         )}
       </div>
+      <Footer/>
     </div>
   )
 }

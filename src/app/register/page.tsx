@@ -189,8 +189,8 @@ export default function RegisterPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Alert className="mb-4 border-blue-200 bg-blue-50">
-            <AlertDescription className="text-blue-700">
+          <Alert className="mb-4 border-[#F58E2F] bg-blue-50">
+            <AlertDescription className="text-[#F58E2F]">
               <strong>Processo de Aprovação:</strong> Sua conta será criada, mas
               precisará ser aprovada por um administrador antes de poder fazer
               login.

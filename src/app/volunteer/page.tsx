@@ -11,6 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Plus, Edit, Trash2, Calendar, User } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
+import Footer from "@/components/footer"
 
 export default function VolunteerPage() {
   const { user, loading } = useAuth()
@@ -158,6 +159,7 @@ export default function VolunteerPage() {
           </CardContent>
         </Card>
       </div>
+      <Footer/>
     </div>
   )
 }

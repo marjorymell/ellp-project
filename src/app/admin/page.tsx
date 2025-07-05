@@ -11,6 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/ca
 import { Plus, Edit, Trash2, Users, FileText, Clock, UserCheck, Settings, AlertCircle, TrendingUp } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
+import Footer from "@/components/footer"
 
 // Função para gerar as iniciais do nome
 const getInitials = (name: string) => {
@@ -401,6 +402,7 @@ export default function AdminPage() {
           </CardContent>
         </Card>
       </div>
+      <Footer/>
     </div>
   )
 }

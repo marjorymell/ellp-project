@@ -40,7 +40,7 @@ export default function Navbar() {
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link href="/" className="flex items-center hover:opacity-80 transition-opacity">
-              <Image src="/ellp_logo.png" alt="ELLP Project" width={120} height={40} className="h-10 w-auto" priority />
+              <Image src="/ellp.png" alt="ELLP Project" width={120} height={40} className="h-16 w-auto" priority />
             </Link>
           </div>
 
